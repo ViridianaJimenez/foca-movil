@@ -1,9 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet, TextInput, Alert, TouchableOpacity, Image} from 'react-native';
 
-
-//const tipeClient = ['cliente', 'vendedor', 'cobrador', 'supervisor']
-
 const Bienvenido = ({navigation, route}) => {
   
   const {name, tipeUser} = route.params

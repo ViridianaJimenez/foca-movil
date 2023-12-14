@@ -2,13 +2,9 @@ import React from "react";
 import { Text, View, StyleSheet, TextInput, Alert, TouchableOpacity, Image, SafeAreaView, ActivityIndicator } from 'react-native';
 import foto from "../assets/bg_init.png";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-
 export const Logincontext = React.createContext({ isloggedin: false, setIsLoggedIn: null });
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   //const [isloggedin, setIsLoggedIn] = React.useState(true); //cambio a false
 
   const { setIsLoggedIn } = React.useContext(Logincontext);
@@ -42,25 +38,21 @@ const Login = ({navigation}) => {
 
 
   const enviarFormulario = () => {
-    if ((Correo === "" && Contraseña === "") ||
-        (Correo !== "" && Contraseña === "") ||
-        (Correo === "" && Contraseña !== "")) {
-       alert("Correo o Contraseña incorrectas")
-    } else {
-      return enviarUsuario();
-    }
-  };
-
-  const enviarUsuario = () => {
     let response = ""
-    database.forEach(datos => {
-      if (datos.correo === Correo){
-        datos.contraseña === Contraseña ? response = {access: "access", name: datos.nombre, tipeUser: datos.tipoUsuario} : response = { access: "denied"}
-      }
-    })
-    if (response === "") response = {access: "denied"}
+    if ((Correo === "" && Contraseña === "") ||
+      (Correo !== "" && Contraseña === "") ||
+      (Correo === "" && Contraseña !== "")) {
+      response = { access: "denied" }
+    } else {
+      database.forEach(datos => {
+        if (datos.correo === Correo) {
+          datos.contraseña === Contraseña ? response = { access: "access", name: datos.nombre, tipeUser: datos.tipoUsuario } : response = { access: "denied" }
+        }
+      })
+      if (response === "") response = { access: "denied" }
+    }
     return response
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -86,8 +78,8 @@ const Login = ({navigation}) => {
         onChangeText={setContraseña}
         value={Contraseña}
       />
-      <TouchableOpacity        
-        onPress = {() => {
+      <TouchableOpacity
+        onPress={() => {
           const dato = enviarFormulario()
           if (dato.access === "access") {
             navigation.navigate("Bienvenido", {
